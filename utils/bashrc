@@ -1,0 +1,7 @@
+source /opt/intel/oneapi/setvars.sh
+source /opt/intel/oneapi/vtune/2021.5.0/env/vars.sh
+
+export INCLUDE="/opt/intel/oneapi/vtune/2021.5.0/sdk/include"
+export LIBRARIES="/opt/intel/oneapi/vtune/2021.5.0/sdk/lib64"
+export INTEL_LIBITTNOTIFY32="/opt/intel/oneapi/vtune/2021.5.0/lib32/runtime/libittnotify_collector.so"
+export INTEL_LIBITTNOTIFY64="/opt/intel/oneapi/vtune/2021.5.0/lib64/runtime/libittnotify_collector.so"
