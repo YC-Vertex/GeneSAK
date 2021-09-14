@@ -1,55 +1,80 @@
 #include <iostream>
+#include <string.h>
 #include <emmintrin.h>
 
 #ifdef VTUNE_ANALYSIS
 #include <ittnotify.h>
 #endif // VTUNE_ANALYSIS
 
-#define COUNT 100000
+#define N 1000
 
 using namespace std;
 
 int main() {
 
 #ifdef VTUNE_ANALYSIS
-    // __itt_domain *domain = __itt_domain_create("EnvTest.Domain");
-    // __itt_string_handle *handle_vecadd = __itt_string_handle_create("vecadd");
     __itt_pause();
 #endif // VTUNE_ANALYSIS
 
-    int vec1[COUNT+5];
-    int vec2[COUNT+5];
-    int vecsum[COUNT+5];
+    int *matA[N];
+    int *matB_T[N];
+    int *matX[N];
 
-    for (int i = 0; i < COUNT; ++i) {
-        vec1[i] = i;
-        vec2[i] = i;
+    /* initialize matrix */
+    cout << "Initializing data ..." << endl;
+
+    for (int i = 0; i < N; ++i) {
+        matA[i] = (int*) malloc(N * sizeof(int));
+        matB_T[i] = (int*) malloc(N * sizeof(int));
+        for (int j = 0; j < N; ++j) {
+            matA[i][j] = i * N + j;
+            matB_T[i][j] = i * N + j;
+        }
     }
 
-    for (int i = 0; i < COUNT; ++i) {
-        _mm_clflush(&vec1[i]);
+    for (int i = 0; i < N; ++i) {
+        matX[i] = (int*) malloc(N * sizeof(int));
+        memset(matX[i], 0, N);
     }
 
-#ifdef VTUNE_ANALYSIS
-    // __itt_task_begin(domain, __itt_null, __itt_null, handle_vecadd);
+
+    /* cache-friendly matmul */
+    cout << "Performing fast matrix multiplication ..." << endl;
+
+#if (defined VTUNE_ANALYSIS && defined MM_FAST)
     __itt_resume();
 #endif // VTUNE_ANALYSIS
-    for (int i = 0; i < COUNT / 100; ++i) {
-		for (int j = 0; j < 100; ++j) {
-			int index = i * 100 + j;
-			vecsum[index] = vec1[index] + vec2[index];
-		}
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) {
+            for (int k = 0; k < N; ++k) {
+                matX[i][j] += matA[i][k] * matB_T[j][k];
+            }
+        }
     }
-#ifdef VTUNE_ANALYSIS
-    // __itt_task_end(domain);
+#if (defined VTUNE_ANALYSIS && defined MM_FAST)
     __itt_pause();
 #endif // VTUNE_ANALYSIS
 
-    for (int i = 0; i < 5; ++i) {
-        cout << vec1[i] << " + " << vec2[i] << " = " << vecsum[i] << endl;
+
+    /* cache-unfriendly matmul */
+    cout << "Performing slow matrix multiplication ..." << endl;
+
+#if (defined VTUNE_ANALYSIS && defined MM_SLOW)
+    __itt_resume();
+#endif // VTUNE_ANALYSIS
+    for (int k = 0; k < N; ++k) {
+        for (int i = 0; i < N; ++i) {
+            for (int j = 0; j < N; ++j) {
+                matX[i][j] += matA[i][k] * matB_T[j][k];
+            }
+        }
     }
-    cout << "..." << endl;
-    cout << vec1[COUNT-1] << " + " << vec2[COUNT-1] << " = " << vecsum[COUNT-1] << endl;
+#if (defined VTUNE_ANALYSIS && defined MM_SLOW)
+    __itt_pause();
+#endif // VTUNE_ANALYSIS
+
+
+    cout << "Done" << endl;
 
     return 0;
 }

@@ -14,13 +14,19 @@ ifneq ($(VTUNE_HOME),)
 	LIBS += -L${VTUNE_HOME}/lib64 -littnotify
 endif
 
-all: build
+all: build_fast build_slow
 
-build:
-	$(CXX) $(CXXFLAGS) -o $(TEST_EXE) $(TEST_SRC) $(INCLUDES) $(LIBS)
+build_fast:
+	$(CXX) $(CXXFLAGS) -o $(TEST_EXE)_fast $(TEST_SRC) $(INCLUDES) $(LIBS) -DMM_FAST
 
-run: 
-	./$(TEST_EXE)
+build_slow:
+	$(CXX) $(CXXFLAGS) -o $(TEST_EXE)_slow $(TEST_SRC) $(INCLUDES) $(LIBS) -DMM_SLOW
+
+run_fast:
+	./$(TEST_EXE)_fast
+
+run_slow:
+	./$(TEST_EXE)_slow
 
 clean: 
-	rm -f $(TEST_EXE)
+	rm -f $(TEST_EXE)_*
