@@ -1,0 +1,3 @@
+[submodule "tools/bwa-mem2"]
+	path = tools/bwa-mem2
+	url = https://github.com/bwa-mem2/bwa-mem2.git
