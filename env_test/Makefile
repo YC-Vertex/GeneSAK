@@ -1,6 +1,6 @@
 # CXX = dpcpp
 CXX = g++
-CXXFLAGS = -O2 -std=c++11 -g -fopenmp
+CXXFLAGS = -O0 -std=c++11 -g -fopenmp
 LIBS = -ldl -lpthread
 
 TEST_SRC = env_test.cpp
