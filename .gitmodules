@@ -1,3 +1,6 @@
 [submodule "tools/bwa-mem2"]
 	path = tools/bwa-mem2
 	url = https://github.com/bwa-mem2/bwa-mem2.git
+[submodule "tools/minimap2"]
+	path = tools/minimap2
+	url = https://github.com/lh3/minimap2.git
