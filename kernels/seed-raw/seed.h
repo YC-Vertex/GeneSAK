@@ -10,6 +10,11 @@ using Seed = uint32_t;
 using PtrTable = std::vector<uint64_t>;
 using PosTable = std::vector<uint64_t>;
 
+typedef struct {
+    PosTable::iterator begin;
+    PosTable::iterator end;
+} LutRet;
+
 class IndexTable {
 private:
     PtrTable tptr;
@@ -20,7 +25,8 @@ public:
     IndexTable();
     IndexTable(const std::string &genome);
 
-    uint64_t lookup(Seed seed);
+    LutRet lookup(Seed sval);
+    LutRet lookup(const std::string &sstr);
 
     void setParam(const std::string &key, int value) { params[key] = value; }
 

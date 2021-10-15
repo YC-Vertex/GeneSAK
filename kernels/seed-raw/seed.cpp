@@ -96,6 +96,18 @@ IndexTable::IndexTable(const std::string &genome) {
 #endif // __DEBUG__
 }
 
+LutRet IndexTable::lookup(Seed seed) {
+    if (seed != tptr.size() - 1)
+        return {tpos.begin() + tptr[seed], tpos.begin() + tptr[seed+1]};
+    else
+        return {tpos.begin() + tptr[seed], tpos.end()};
+}
+
+LutRet IndexTable::lookup(const std::string &sstr) {
+    Seed sval = str2seed(sstr);
+    return lookup(sval);
+}
+
 void IndexTable::DEBUG_OUTPUT() {
     for (Seed i = 0; i < tptr.size(); ++i) {
         bool flag = false;
