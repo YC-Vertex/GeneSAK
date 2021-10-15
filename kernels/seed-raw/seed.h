@@ -19,6 +19,8 @@ class IndexTable {
 private:
     PtrTable tptr;
     PosTable tpos;
+
+public:
     std::unordered_map<std::string, int> params;
 
 public:

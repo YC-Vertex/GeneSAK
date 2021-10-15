@@ -41,21 +41,21 @@ std::string seed2str(Seed sval, int len) {
 
 IndexTable::IndexTable() {
     /* set default params */
-    params["MAX_GENOME_LEN"] = 20e6;
-    params["GENOME_LEN"] = 20e6;
+    params["MAX_REF_LEN"] = 20e6;
+    params["REF_LEN"] = 20e6;
     params["SEED_LEN"] = 3;
     params["EMPTY_TABLE"] = 1;
 }
 
 IndexTable::IndexTable(const std::string &genome) {
     /* set default params */
-    params["MAX_GENOME_LEN"] = 20e6;
-    params["GENOME_LEN"] = min(genome.length(), params["MAX_GENOME_LEN"]);
+    params["MAX_REF_LEN"] = 20e6;
+    params["REF_LEN"] = min(genome.length(), params["MAX_REF_LEN"]);
     params["SEED_LEN"] = 3;
     params["EMPTY_TABLE"] = 0;
 
     /* calculate params */
-    int glen = params["GENOME_LEN"];
+    int glen = params["REF_LEN"];
     int slen = params["SEED_LEN"];
     uint64_t ptrcnt = pow(4, slen);
     uint64_t poscnt = glen - slen + 1;
@@ -164,7 +164,7 @@ void IndexTable::loadFile(const std::string &f) {
     }
 
     ptrcnt = pow(4, params["SEED_LEN"]);
-    poscnt = params["GENOME_LEN"] - params["SEED_LEN"] + 1;
+    poscnt = params["REF_LEN"] - params["SEED_LEN"] + 1;
 
     for (int i = 0; i < ptrcnt; ++i) {
         uint64_t n;

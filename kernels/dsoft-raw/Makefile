@@ -1,8 +1,9 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -O3 -D__DEBUG__
-INCLUDES =
+INCLUDES = -I../seed-raw
 
-OBJ = $(patsubst %.cpp, %.o, $(wildcard *.cpp))
+MAINS = $(wildcard ../seed-raw/step_*)
+OBJ = $(patsubst %.cpp, %.o, $(filter-out $(MAINS), $(wildcard *.cpp ../seed-raw/*.cpp)))
 
 .PHONY: all
 all: build 
@@ -15,5 +16,6 @@ build: $(OBJ)
 
 .PHONY: clean
 clean:
-	-rm step_index
+	-rm step_ext
 	-rm *.o
+	-rm ../seed-raw/*.o
