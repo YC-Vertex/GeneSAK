@@ -1,5 +1,6 @@
 *.swp
 *.log
+*.dump
 
 *.o
 
@@ -7,5 +8,8 @@ env_test/env_test_*
 kernels/fmi/fmi
 kernels/bsw/bsw
 kernels/chain/chain
+kernels/seed-raw/step_index
+kernels/dsoft-raw/step_ext
+kernels/gact-raw/step_align
 
 kernels/chain/build/
