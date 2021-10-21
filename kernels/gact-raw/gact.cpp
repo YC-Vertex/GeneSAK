@@ -26,6 +26,9 @@ AlignTileRet alignTile(std::string ref, std::string qry, bool first, int maxTBLe
         for (int j = 0; j < qry.length(); ++j) {
             if (i == 0 || j == 0) {
                 dp[i][j] = 0;
+                tb[i][j] = 0;
+                tb[i][j] |= (i > 0) ? 0b10 : 0;
+                tb[i][j] |= (j > 0) ? 0b01 : 0;
                 continue;
             }
             
@@ -60,7 +63,7 @@ AlignTileRet alignTile(std::string ref, std::string qry, bool first, int maxTBLe
     int i = ref.length() - 1;
     int j = qry.length() - 1;
 
-    while (maxTBLen != 0 && i > 0 && j > 0) {
+    while (maxTBLen != 0 && i >= 0 && j >= 0 && !(i == 0 && j == 0)) {
         bool im1 = false;
         bool jm1 = false;
 
@@ -120,24 +123,22 @@ GACTRet gact(AlignTask *task, std::string ref, std::string qry, MatchPos initPos
                       << std::endl << std::endl;
         }
         else {
-            std::cout << "Query[" << istart << ":" << icurr << "] <->"
-                      << "Ref[" << jstart << ":" << jcurr << "]:"
+            std::cout << "Ref[" << istart << ":" << icurr << "] <-> "
+                      << "Qry[" << jstart << ":" << jcurr << "]:"
                       << std::endl;
             std::cout << ret.refTBStr << std::endl
                       << ret.qryTBStr << std::endl << std::endl;
         }
 #endif // __DEBUG__
 
+        icurr = istart + ret.offset.refPos;
+        jcurr = jstart + ret.offset.qryPos;
+
         if (first) {
-            icurr = istart + ret.offset.refPos;
-            jcurr = jstart + ret.offset.qryPos;
             optPos = {(uint64_t)icurr, (uint64_t)jcurr};
             first = false;
             continue;
         }
-
-        int icurr = istart + ret.offset.refPos;
-        int jcurr = jstart + ret.offset.qryPos;
 
         if (icurr == 0 || jcurr == 0)
             break;

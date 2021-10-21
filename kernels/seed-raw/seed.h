@@ -30,7 +30,7 @@ private:
 
 public:
     IndexTable();
-    IndexTable(const std::string &reference);
+    IndexTable(const std::string &ref);
 
     LutRet lookup(Seed sval);
     LutRet lookup(const std::string &sstr);
