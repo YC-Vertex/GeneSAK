@@ -13,6 +13,9 @@ build: $(OBJ)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $@ -c $<
 
+run:
+	./step_index
+
 .PHONY: clean
 clean:
 	-rm step_index

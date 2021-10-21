@@ -8,6 +8,6 @@ typedef struct {
     uint64_t qryPos;
 } MatchPos;
 
-std::vector<MatchPos> dsoft(IndexTable *table, const std::string &query);
+std::vector<MatchPos> dsoft(IndexTable *table, const std::string &qry);
 
 #endif // __DSOFT_H__

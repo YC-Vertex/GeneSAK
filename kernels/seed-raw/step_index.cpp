@@ -10,6 +10,7 @@ int main() {
     copy->loadFile("table.dump");
 
     auto r = copy->lookup("CAC");
+    std::cout << "CAC: ";
     for (auto it = r.begin; it != r.end; ++it) {
         std::cout << *it << " ";
     }

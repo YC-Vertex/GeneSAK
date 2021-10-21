@@ -47,10 +47,10 @@ IndexTable::IndexTable() {
     params["EMPTY_TABLE"] = 1;
 }
 
-IndexTable::IndexTable(const std::string &genome) {
+IndexTable::IndexTable(const std::string &ref) {
     /* set default params */
     params["MAX_REF_LEN"] = 20e6;
-    params["REF_LEN"] = min(genome.length(), params["MAX_REF_LEN"]);
+    params["REF_LEN"] = min(ref.length(), params["MAX_REF_LEN"]);
     params["SEED_LEN"] = 3;
     params["EMPTY_TABLE"] = 0;
 
@@ -62,7 +62,7 @@ IndexTable::IndexTable(const std::string &genome) {
 
 #ifdef __DEBUG__
     std::cout << "========== Parameters ==========" << std::endl
-              << "Genome Length = " << glen << std::endl
+              << "Reference Length = " << glen << std::endl
               << "Seed Length = " << slen << std::endl
               << "# of Entries in the Pointer Table = " << ptrcnt << std::endl
               << "# of Entries in the Position Table = " << poscnt << std::endl
@@ -74,7 +74,7 @@ IndexTable::IndexTable(const std::string &genome) {
 
     /* generate position table */
     for (uint64_t i = 0; i < poscnt; ++i) {
-        Seed s = str2seed(genome.substr(i, slen));
+        Seed s = str2seed(ref.substr(i, slen));
 
         uint64_t index = std::accumulate(tptr.begin(), tptr.begin() + s + 1, 0);
         tptr[s] += 1;

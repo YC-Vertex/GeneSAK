@@ -15,22 +15,25 @@ typedef struct {
     PosTable::iterator end;
 } LutRet;
 
-class IndexTable {
+class AlignTask {
+public:
+    std::unordered_map<std::string, int> params;
+
+public:
+    void setParam(const std::string &key, int value) { params[key] = value; }
+};
+
+class IndexTable : public AlignTask{
 private:
     PtrTable tptr;
     PosTable tpos;
 
 public:
-    std::unordered_map<std::string, int> params;
-
-public:
     IndexTable();
-    IndexTable(const std::string &genome);
+    IndexTable(const std::string &reference);
 
     LutRet lookup(Seed sval);
     LutRet lookup(const std::string &sstr);
-
-    void setParam(const std::string &key, int value) { params[key] = value; }
 
     void saveFile(const std::string &f);
     void loadFile(const std::string &f);

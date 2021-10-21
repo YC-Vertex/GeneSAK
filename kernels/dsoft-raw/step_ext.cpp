@@ -3,21 +3,27 @@
 #include "dsoft.h"
 #include "seed.h"
 
+inline int min(int a, int b) {
+    return a < b ? a : b;
+}
+
+inline int max(int a, int b) {
+    return a > b ? a : b;
+}
+
 int main() {
-    IndexTable *table = new IndexTable();
-    table->loadFile("table.dump");
+    std::string ref = "GATCACAGGTCTATCACCCTATTAACCACTCACGAGCTCTCCATGCATTTGGTATTACTCTATTAACCACTCTTAAAAAAAA";
+    std::string qry = "ACTCTATTAACCACTC";
 
-    /* set default params */
-    table->params["BIN_SIZE"] = 10;
-    table->params["MATCH_THRES"] = 6;
+    IndexTable *t = new IndexTable(ref);
+    std::vector<MatchPos> result = dsoft(t, qry);
 
-    std::vector<MatchPos> result = dsoft(table, "ACTCTATTAACCACTC");
-
-    std::cout << "========== Results ==========" << std::endl;
+    std::cout << "Query: " << std::endl
+              << qry << std::endl << std::endl
+              << "Results: " << std::endl;
     for (auto &it : result) {
-        std::cout << "Reference @ " << it.refPos << " <-> Query @ " << it.qryPos << std::endl;
+        std::cout << ref.substr(max(0, it.refPos - t->params["BIN_SIZE"]), t->params["BIN_SIZE"] + t->params["SEED_LEN"]) << std::endl;
     }
-    std::cout << "=============================" << std::endl << std::endl;
 
     return 0;
 }
