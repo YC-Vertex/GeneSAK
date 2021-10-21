@@ -1,7 +1,8 @@
-#include "dsoft.h"
-
 #include <assert.h>
 #include <vector>
+
+#include "dsoft.h"
+
 
 inline int max(int a, int b) {
     return a > b ? a : b;
@@ -51,8 +52,7 @@ std::vector<MatchPos> dsoft(IndexTable *table, const std::string &qry) {
             last_hit_pos[bin] = j;
             bp_count[bin] = bp_count[bin] + k - overlap;
             if (h + k - overlap > bp_count[bin] && bp_count[bin] >= h) {
-                MatchPos pos = {*it, j};
-                candidate_pos.push_back(pos);
+                candidate_pos.push_back({*it, uint64_t(j)});
             }
         }
     }
